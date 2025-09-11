@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>知识图谱可视化 - 优化版</title>
+  <script src="https://unpkg.com/cytoscape@3.24.0/dist/cytoscape.min.js"></script>
+  <style>
+    #cy {
+      width: 100%;
+      height: 85vh;
+      display: block;
+      border: 1px solid #ccc;
+    }
+    .legend {
+      position: absolute;
+      top: 80px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 12px;
+      z-index: 1000;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .legend-color {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<h2 style="text-align:center;">知识图谱可视化 - 网络通信领域</h2>
+<div style="text-align: center; margin: 10px;">
+  <input type="text" id="searchInput" placeholder="搜索节点..." style="padding: 5px; margin: 5px;">
+  <button onclick="filterNodes()">搜索</button>
+  <button onclick="showAll()">显示全部</button>
+  <select id="nodeCount" onchange="limitNodes()">
+    <option value="10">显示前10个</option>
+    <option value="20" selected>显示前20个</option>
+    <option value="50">显示前50个</option>
+    <option value="500">显示前500个</option>
+  </select>
+  <button onclick="resetLayout()">重新布局</button>
+</div>
+
+<!-- 图例 -->
+<div class="legend">
+  <h4 style="margin-top: 0;">实体类型</h4>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: #3498db;"></div>
+    <span>Concept (概念)</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: #e74c3c;"></div>
+    <span>Protocol (协议)</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: #2ecc71;"></div>
+    <span>Organization (组织)</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: #f39c12;"></div>
+    <span>Device (设备)</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: #9b59b6;"></div>
+    <span>Algorithm (算法)</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: #1abc9c;"></div>
+    <span>Standard (标准)</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-color" style="background-color: #95a5a6;"></div>
+    <span>其他</span>
+  </div>
+</div>
+
+<div id="cy"></div>
+
+<script>
+let originalData = null;
+let cy = null;
+
+// 加载外部的 JSON 数据
+fetch('cytoscape_graph.json')
+  .then(response => response.json())
+  .then(graphData => {
+    console.log('数据加载成功:', graphData);
+    console.log('节点数量:', graphData.nodes.length);
+    console.log('边数量:', graphData.edges.length);
+    originalData = graphData;
+    initializeGraph(20);
+  })
+  .catch(error => {
+    console.error('加载数据失败:', error);
+    alert('无法加载数据文件 cytoscape_graph2.json');
+  });
+
+function initializeGraph(limit) {
+  if (!originalData) return;
+  
+  // 统计节点连接数
+  const nodeConnections = {};
+  originalData.edges.forEach(edge => {
+    const source = edge.data.source;
+    const target = edge.data.target;
+    nodeConnections[source] = (nodeConnections[source] || 0) + 1;
+    nodeConnections[target] = (nodeConnections[target] || 0) + 1;
+  });
+  
+  // 获取前N个最重要的节点
+  const topNodes = Object.entries(nodeConnections)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, limit)
+    .map(([nodeId]) => nodeId);
+  
+  // 过滤数据
+  const filteredNodes = originalData.nodes.filter(node => 
+    topNodes.includes(node.data.id)
+  );
+  
+  const filteredEdges = originalData.edges.filter(edge => 
+    topNodes.includes(edge.data.source) && topNodes.includes(edge.data.target)
+  );
+  
+  // 销毁现有图谱
+  if (cy) cy.destroy();
+  
+  cy = cytoscape({
+    container: document.getElementById('cy'),
+    elements: [...filteredNodes, ...filteredEdges],
+    layout: {
+      name: 'cose',
+      animate: true,
+      nodeRepulsion: 400000,
+      nodeOverlap: 20,
+      idealEdgeLength: 120,
+      edgeElasticity: 100,
+      nestingFactor: 5,
+      gravity: 80,
+      numIter: 1000,
+      initialTemp: 200,
+      coolingFactor: 0.95,
+      minTemp: 1.0
+    },
+    style: [
+      // 通用默认样式
+      {
+        selector: 'node',
+        style: {
+          'label': 'data(id)',
+          'background-color': '#95a5a6',
+          'text-valign': 'center',
+          'text-halign': 'center',
+          'color': '#fff',
+          'font-size': '11px',
+          'font-weight': 'bold',
+          'text-outline-width': 2,
+          'text-outline-color': '#95a5a6',
+          'width': 'mapData(connections, 0, 50, 35, 90)',
+          'height': 'mapData(connections, 0, 50, 35, 90)',
+          'border-width': 2,
+          'border-color': '#fff'
+        }
+      },
+      // Concept (概念) - 蓝色
+      {
+        selector: 'node[label = "Concept"]',
+        style: {
+          'background-color': '#3498db',
+          'text-outline-color': '#3498db',
+          'border-color': '#2980b9'
+        }
+      },
+      // Protocol (协议) - 红色
+      {
+        selector: 'node[label = "Protocol"]',
+        style: {
+          'background-color': '#e74c3c',
+          'text-outline-color': '#e74c3c',
+          'border-color': '#c0392b'
+        }
+      },
+      // Organization (组织) - 绿色
+      {
+        selector: 'node[label = "Organization"]',
+        style: {
+          'background-color': '#2ecc71',
+          'text-outline-color': '#2ecc71',
+          'border-color': '#27ae60'
+        }
+      },
+      // Device (设备) - 橙色
+      {
+        selector: 'node[label = "Device"]',
+        style: {
+          'background-color': '#f39c12',
+          'text-outline-color': '#f39c12',
+          'border-color': '#e67e22'
+        }
+      },
+      // Algorithm (算法) - 紫色
+      {
+        selector: 'node[label = "Algorithm"]',
+        style: {
+          'background-color': '#9b59b6',
+          'text-outline-color': '#9b59b6',
+          'border-color': '#8e44ad'
+        }
+      },
+      // Standard (标准) - 青色
+      {
+        selector: 'node[label = "Standard"]',
+        style: {
+          'background-color': '#1abc9c',
+          'text-outline-color': '#1abc9c',
+          'border-color': '#16a085'
+        }
+      },
+      // 兼容旧的 CATEGORY 类型
+      {
+        selector: 'node[label = "CATEGORY"]',
+        style: {
+          'background-color': '#3498db',
+          'text-outline-color': '#3498db',
+          'border-color': '#2980b9'
+        }
+      },
+      // 边的样式
+      {
+        selector: 'edge',
+        style: {
+          'width': 'mapData(weight, 1, 50, 1, 3)',
+          'line-color': '#ddd',
+          'target-arrow-shape': 'triangle',
+          'target-arrow-color': '#ddd',
+          'curve-style': 'bezier',
+          'opacity': 0.6
+        }
+      },
+      // 选中状态
+      {
+        selector: 'node:selected',
+        style: {
+          'border-width': 4,
+          'border-color': '#f1c40f'
+        }
+      },
+      {
+        selector: 'edge:selected',
+        style: {
+          'line-color': '#f1c40f',
+          'target-arrow-color': '#f1c40f',
+          'width': 4
+        }
+      }
+    ]
+  });
+
+  // 为节点添加连接数信息（用于大小映射）
+  cy.nodes().forEach(node => {
+    const connections = nodeConnections[node.id()] || 0;
+    node.data('connections', connections);
+  });
+  
+  // 添加点击事件，显示节点详细信息
+  cy.on('tap', 'node', function(evt) {
+    const node = evt.target;
+    console.log('节点信息:', {
+      id: node.data('id'),
+      label: node.data('label'),
+      connections: node.data('connections')
+    });
+    
+    // 高亮相关节点
+    cy.elements().removeClass('highlighted');
+    node.addClass('highlighted');
+    node.neighborhood().addClass('highlighted');
+  });
+  
+  // 添加鼠标悬停效果
+  cy.on('mouseover', 'node', function(evt) {
+    const node = evt.target;
+    node.style('cursor', 'pointer');
+  });
+}
+
+function limitNodes() {
+  const limit = parseInt(document.getElementById('nodeCount').value);
+  initializeGraph(limit);
+}
+
+function filterNodes() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+  if (!searchTerm) {
+    showAll();
+    return;
+  }
+  
+  cy.nodes().hide();
+  cy.edges().hide();
+  
+  const matchingNodes = cy.nodes().filter(node => 
+    node.data('id').toLowerCase().includes(searchTerm) ||
+    node.data('label').toLowerCase().includes(searchTerm)
+  );
+  
+  matchingNodes.show();
+  matchingNodes.connectedEdges().show();
+  matchingNodes.connectedEdges().connectedNodes().show();
+  
+  if (matchingNodes.length === 0) {
+    alert('未找到匹配的节点');
+  }
+}
+
+function showAll() {
+  if (cy) {
+    cy.nodes().show();
+    cy.edges().show();
+    cy.elements().removeClass('highlighted');
+    document.getElementById('searchInput').value = '';
+  }
+}
+
+function resetLayout() {
+  if (cy) {
+    cy.layout({
+      name: 'cose',
+      animate: true,
+      nodeRepulsion: 400000,
+      nodeOverlap: 20,
+      idealEdgeLength: 120,
+      edgeElasticity: 100
+    }).run();
+  }
+}
+
+// 添加高亮样式
+document.addEventListener('DOMContentLoaded', function() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .highlighted {
+      opacity: 1 !important;
+    }
+    .cy-node:not(.highlighted), .cy-edge:not(.highlighted) {
+      opacity: 0.3 !important;
+    }
+  `;
+  document.head.appendChild(style);
+});
+</script>
+
+</body>
+</html>

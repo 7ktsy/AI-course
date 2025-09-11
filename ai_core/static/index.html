@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 聊天助手</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .chat-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: 20%;
+        }
+        
+        .assistant-message {
+            background-color: #f5f5f5;
+            margin-right: 20%;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #1976d2;
+        }
+        
+        .typing-indicator {
+            display: none;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h1>AI 聊天助手</h1>
+        <div class="messages" id="messages"></div>
+        <div class="typing-indicator" id="typing">AI 正在思考...</div>
+        <div class="input-container">
+            <input type="text" id="question" placeholder="输入你的问题..." />
+            <button onclick="sendMessage()">发送</button>
+        </div>
+    </div>
+
+    <script>
+        // 配置
+        const config = {
+            chatName: "测试的助手",
+            sessionName: "web_chat",
+            sessionId: null
+        };
+
+        let currentAnswer = "";
+        const messagesDiv = document.getElementById('messages');
+        const questionInput = document.getElementById('question');
+        const typingIndicator = document.getElementById('typing');
+
+        // 添加消息到界面
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
+            messageDiv.textContent = content;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // 更新AI的最后一条消息
+        function updateLastAIMessage(content) {
+            const messages = messagesDiv.getElementsByClassName('assistant-message');
+            if (messages.length > 0) {
+                messages[messages.length - 1].textContent = content;
+            } else {
+                addMessage(content, false);
+            }
+        }
+
+        // 使用 Server-Sent Events 发送消息
+        async function sendMessage() {
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            // 显示用户消息
+            addMessage(question, true);
+            questionInput.value = '';
+            typingIndicator.style.display = 'block';
+            currentAnswer = '';
+
+            // 创建 SSE 连接
+            const params = new URLSearchParams({
+                question: question,
+                chat_name: config.chatName,
+                session_name: config.sessionName,
+                ...(config.sessionId && { session_id: config.sessionId })
+            });
+
+            const eventSource = new EventSource(`/api/chat/stream?${params}`);
+
+            eventSource.onmessage = (event) => {
+                const response = JSON.parse(event.data);
+                
+                if (response.code === 0) {
+                    if (typeof response.data === 'boolean') {
+                        // 收到结束标记
+                        eventSource.close();
+                        typingIndicator.style.display = 'none';
+                    } else if (response.data?.answer) {
+                        // 更新回答
+                        currentAnswer = response.data.answer;
+                        updateLastAIMessage(currentAnswer);
+                    }
+                } else {
+                    // 处理错误
+                    addMessage(`错误: ${response.message}`, false);
+                    eventSource.close();
+                    typingIndicator.style.display = 'none';
+                }
+            };
+
+            eventSource.onerror = (error) => {
+                console.error('SSE Error:', error);
+                eventSource.close();
+                typingIndicator.style.display = 'none';
+                addMessage('连接错误，请重试', false);
+            };
+        }
+
+        // 按回车发送消息
+        questionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html> 

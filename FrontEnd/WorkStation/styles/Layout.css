@@ -1,0 +1,374 @@
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 顶部导航栏样式 */
+.header {
+    background-color: #000000;
+    height: 70px; /* 调整为与HomePage一致 */
+    padding: 0 15px; /* 调整为与HomePage一致 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+}
+
+.logo-text {
+    font-family: "Snap ITC"; /* 与HomePage一致 */
+    font-size: 20px;
+    color: #fff;
+    padding-right: 20px;
+}
+
+.search-container {
+    width: 480px;
+    height: 40px;
+    margin: 0 20px;
+    background-color: #1f1f1f;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-box {
+    width: 350px;
+    padding: 8px 35px 8px 15px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.search-button {
+    padding: 5px;
+    margin-left: 10px;
+    background: transparent;
+    border: none;
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-family: "宋体";
+    font-style: normal;
+}
+
+.search-button:hover {
+    color: white;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.notification {
+    position: relative;
+    cursor: pointer;
+    color: #fff;
+}
+
+.notification i {
+    width: 40px;
+    height: 40px;
+    background-color: #1f1f1f;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.notification:hover i {
+    color: #d8aa45;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #e84118;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #1f1f1f;
+}
+
+.user-name {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 12px;
+    color: #fff;
+}
+
+.user-role {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.settings, .logout {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-color: #1f1f1f;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.settings:hover, .logout:hover {
+    color: #d8aa45;
+}
+
+/* 主容器样式 */
+.main-container {
+    display: flex;
+    margin-top: 60px;
+    min-height: calc(100vh - 60px - 50px);
+}
+
+/* 侧边栏样式 */
+.sidebar {
+    width: 220px;
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    position: fixed;
+    left: 0;
+    top: 60px;
+    bottom: 50px;
+    overflow-y: auto;
+    border-right: 1px solid #e1e1e1;
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.menu-item {
+    padding: 12px 20px;
+    color: #2f3640;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-left: 4px solid transparent;
+}
+
+.menu-item:hover {
+    background-color: #f1f2f6;
+    border-left-color: #40739e;
+}
+
+.menu-item.active {
+    background-color: #f1f2f6;
+    border-left-color: #40739e;
+    color: #40739e;
+}
+
+.menu-item i {
+    font-size: 1.2rem;
+}
+
+/* 内容区域样式 */
+.content {
+    flex: 1;
+    margin-left: 220px;
+    padding: 25px;
+    background-color: #fff;
+    min-height: 100%;
+}
+
+.content-header {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    color: #2f3640;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.breadcrumb {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.breadcrumb-item {
+    color: #666;
+}
+
+.breadcrumb-item:not(:last-child)::after {
+    content: ">";
+    margin: 0 8px;
+    color: #999;
+}
+
+.content-body {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 底部样式 */
+.footer {
+    background-color: #2f3640;
+    color: #fff;
+    padding: 15px 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-size: 0.9rem;
+    color: #dcdde1;
+}
+
+/* 修改footer链接样式 */
+.footer-link {
+    color: #dcdde1;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-link:hover {
+    color: #fff;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+    }
+
+    .menu-item span {
+        display: none;
+    }
+
+    .content {
+        margin-left: 60px;
+    }
+
+    .logo-text {
+        display: none;
+    }
+
+    .user-name, .user-role {
+        display: none;
+    }
+
+    .search-wrapper {
+        width: 200px;
+    }
+    
+    .search-box::placeholder {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .search-container {
+        display: none;
+    }
+}
+
+/* 动画效果 */
+.fade-enter {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 300ms ease-in;
+}
+
+.fade-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 300ms ease-in;
+} 

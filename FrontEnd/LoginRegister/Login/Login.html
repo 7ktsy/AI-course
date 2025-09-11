@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="Login.css">
+</head>
+
+<body>
+    <div class="Logo_LoginContainer">
+        <div class="logoContainer">
+            nihao
+        </div>
+        <div class="loginRegistercontainer">
+            <div class="formTitle">登录/注册</div>
+            <div class="role-selector">
+                <button class="role-btn" id="studentLoginBtn">学生登录</button>
+                <button class="role-btn" id="teacherLoginBtn">老师登录</button>
+                <button class="role-btn" id="adminLoginBtn">管理员登录</button>
+            </div>
+            <div id="loginFormContainer">
+                <form id="studentForm" class="login-form" style="display: none;">
+                    <div class="form-group">
+                        <input type="text" id="studentPhone" name="studentPhone" placeholder="请输入学生手机号">
+                        <div id="studentPhoneError" class="error-message">请输入有效的手机号</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="studentPassword" name="studentPassword" placeholder="请输入密码">
+                        <div id="studentPasswordError" class="error-message">密码至少包含一个字母和一个数字，长度至少6位</div>
+                    </div>
+                    <!-- 验证码输入框已禁用
+                    <div class="verificationCodeContainer">
+                        <input type="text" id="studentCaptcha" name="studentCaptcha" placeholder="请输入验证码">
+                        <img src="/captcha" alt="验证码" id="studentCaptchaImg" -->
+                   
+                    <div class="form-group">
+                        <button type="submit">登录</button>
+                    </div>
+                </form>
+                <form id="teacherForm" class="login-form" style="display: none;">
+                    <div class="form-group">
+                        <input type="text" id="teacherPhone" name="teacherPhone" placeholder="请输入教师手机号">
+                        <div id="teacherPhoneError" class="error-message">请输入有效的手机号</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="teacherPassword" name="teacherPassword" placeholder="请输入密码">
+                        <div id="teacherPasswordError" class="error-message">密码至少包含一个字母和一个数字，长度至少6位</div>
+                    </div>
+                    <!-- 验证码输入框已禁用
+                    <div class="verificationCodeContainer">
+                        <input type="text" id="teacherCaptcha" name="teacherCaptcha" placeholder="请输入验证码">
+                        <img src="/captcha" alt="验证码" id="teacherCaptchaImg"
+                            onclick="refreshCaptcha('teacherCaptchaImg')" style="cursor:pointer; height: 40px;">
+                    </div>
+                    <div id="teacherCaptchaError" class="error-message">验证码错误</div>
+                    -->
+                    <div class="form-group">
+                        <button type="submit">登录</button>
+                    </div>
+                </form>
+                <form id="adminForm" class="login-form" style="display: none;">
+                    <div class="form-group">
+                        <input type="text" id="adminUsername" name="adminUsername" placeholder="请输入管理员账号">
+                        <div id="adminUsernameError" class="error-message">请输入管理员账号</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="adminPassword" name="adminPassword" placeholder="请输入密码">
+                        <div id="adminPasswordError" class="error-message">密码至少包含一个字母和一个数字，长度至少6位</div>
+                    </div>
+                    <!-- 验证码输入框已禁用
+                    <div class="verificationCodeContainer">
+                        <input type="text" id="adminCaptcha" name="adminCaptcha" placeholder="请输入验证码">
+                        <img src="/captcha" alt="验证码" id="adminCaptchaImg" onclick="refreshCaptcha('adminCaptchaImg')"
+                            style="cursor:pointer; height: 40px;">
+                    </div>
+                    <div id="adminCaptchaError" class="error-message">请输入验证码</div>
+                    -->
+                    <div class="form-group">
+                        <button type="submit">登录</button>
+                    </div>
+                </form>
+            </div>
+            <div class="toggle-mode">
+                <div class="toggle-links">
+                    <a href="../Register/Register.html" class="toggle-link">立即注册</a>
+                    <a href="../ForgotPassword/ForgotPassword.html" class="toggle-link">忘记密码</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="Login.js"></script>
+</html>

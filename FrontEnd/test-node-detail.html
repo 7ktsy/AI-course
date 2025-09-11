@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>节点详情测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f7fa;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        .test-button {
+            background: #409EFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #337ecc;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>节点详情功能测试</h1>
+        
+        <h3>测试1: 模拟节点数据</h3>
+        <button class="test-button" onclick="testNodeData()">测试节点数据解析</button>
+        
+        <h3>测试2: AI接口调用</h3>
+        <button class="test-button" onclick="testAIAPI()">测试AI接口</button>
+        
+        <h3>测试3: 相关节点获取</h3>
+        <button class="test-button" onclick="testRelatedNodes()">测试相关节点</button>
+        
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        // 模拟节点数据
+        const mockNodeData = {
+            id: "TCP协议",
+            label: "PROTOCOL",
+            title: "TCP协议",
+            description: "传输控制协议，是互联网协议套件中的一个核心协议",
+            pagerank: 0.123456,
+            rank: 5,
+            important_keywords: ["传输控制", "可靠传输", "连接导向"],
+            connections: 15
+        };
+
+        // 模拟知识图谱数据
+        const mockGraphData = {
+            nodes: [
+                {
+                    data: {
+                        id: "TCP协议",
+                        label: "PROTOCOL",
+                        title: "TCP协议",
+                        description: "传输控制协议"
+                    }
+                },
+                {
+                    data: {
+                        id: "UDP协议",
+                        label: "PROTOCOL",
+                        title: "UDP协议",
+                        description: "用户数据报协议"
+                    }
+                },
+                {
+                    data: {
+                        id: "IP协议",
+                        label: "PROTOCOL",
+                        title: "IP协议",
+                        description: "网际协议"
+                    }
+                }
+            ],
+            edges: [
+                {
+                    data: {
+                        source: "TCP协议",
+                        target: "UDP协议"
+                    }
+                },
+                {
+                    data: {
+                        source: "TCP协议",
+                        target: "IP协议"
+                    }
+                }
+            ]
+        };
+
+        function showResult(content) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = content;
+            resultDiv.style.display = 'block';
+        }
+
+        function testNodeData() {
+            try {
+                // 测试节点数据编码解码
+                const encodedData = encodeURIComponent(JSON.stringify(mockNodeData));
+                const decodedData = JSON.parse(decodeURIComponent(encodedData));
+                
+                showResult(`
+                    <h4>节点数据测试结果:</h4>
+                    <p><strong>原始数据:</strong></p>
+                    <pre>${JSON.stringify(mockNodeData, null, 2)}</pre>
+                    <p><strong>编码后:</strong></p>
+                    <pre>${encodedData}</pre>
+                    <p><strong>解码后:</strong></p>
+                    <pre>${JSON.stringify(decodedData, null, 2)}</pre>
+                    <p><strong>测试结果:</strong> ${JSON.stringify(mockNodeData) === JSON.stringify(decodedData) ? '✅ 通过' : '❌ 失败'}</p>
+                `);
+            } catch (error) {
+                showResult(`<h4>节点数据测试失败:</h4><p>${error.message}</p>`);
+            }
+        }
+
+        async function testAIAPI() {
+            try {
+                showResult('<h4>AI接口测试中...</h4>');
+                
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    showResult('<h4>AI接口测试失败:</h4><p>未找到token，请先登录</p>');
+                    return;
+                }
+
+                const question = `请简单介绍一下TCP协议`;
+                const params = new URLSearchParams({
+                    question: question,
+                    chat_name: '计算机网络问题解答助手'
+                });
+                
+                const response = await fetch(`http://127.0.0.1:8000/chat/simple?${params}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    showResult(`
+                        <h4>AI接口测试结果:</h4>
+                        <p><strong>状态码:</strong> ${response.status}</p>
+                        <p><strong>响应数据:</strong></p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p><strong>测试结果:</strong> ${data.code === 0 ? '✅ 通过' : '❌ 失败'}</p>
+                    `);
+                } else {
+                    const errorData = await response.json();
+                    showResult(`
+                        <h4>AI接口测试失败:</h4>
+                        <p><strong>状态码:</strong> ${response.status}</p>
+                        <p><strong>错误信息:</strong></p>
+                        <pre>${JSON.stringify(errorData, null, 2)}</pre>
+                    `);
+                }
+            } catch (error) {
+                showResult(`<h4>AI接口测试失败:</h4><p>${error.message}</p>`);
+            }
+        }
+
+        function testRelatedNodes() {
+            try {
+                // 保存模拟数据到localStorage
+                localStorage.setItem('knowledgeGraphData', JSON.stringify(mockGraphData));
+                
+                const currentNodeId = "TCP协议";
+                const relatedEdges = mockGraphData.edges.filter(edge => 
+                    edge.data.source === currentNodeId || edge.data.target === currentNodeId
+                );
+                
+                const relatedNodeIds = new Set();
+                relatedEdges.forEach(edge => {
+                    if (edge.data.source === currentNodeId) {
+                        relatedNodeIds.add(edge.data.target);
+                    } else {
+                        relatedNodeIds.add(edge.data.source);
+                    }
+                });
+                
+                const relatedNodesData = mockGraphData.nodes
+                    .filter(node => relatedNodeIds.has(node.data.id))
+                    .map(node => ({
+                        id: node.data.id,
+                        title: node.data.title || node.data.id,
+                        label: node.data.label,
+                        description: node.data.description
+                    }));
+                
+                showResult(`
+                    <h4>相关节点测试结果:</h4>
+                    <p><strong>当前节点:</strong> ${currentNodeId}</p>
+                    <p><strong>相关边:</strong></p>
+                    <pre>${JSON.stringify(relatedEdges, null, 2)}</pre>
+                    <p><strong>相关节点:</strong></p>
+                    <pre>${JSON.stringify(relatedNodesData, null, 2)}</pre>
+                    <p><strong>测试结果:</strong> ✅ 通过 (找到 ${relatedNodesData.length} 个相关节点)</p>
+                `);
+            } catch (error) {
+                showResult(`<h4>相关节点测试失败:</h4><p>${error.message}</p>`);
+            }
+        }
+    </script>
+</body>
+</html> 

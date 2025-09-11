@@ -1,0 +1,197 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.Logo_LoginContainer {
+    width: 600px;
+    background-color: #fefdfd;
+    border-radius: 20px;
+    border-width: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+}
+
+.logoContainer {
+    width: 200px;
+    height: 100%;
+
+    margin: 0 20px;
+
+    background-color: aqua;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginRegistercontainer {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+}
+
+.formTitle {
+    font-size: 20px; 
+    color: #333333;
+    text-align: center; 
+    margin: 5px;
+    font-weight: bold; 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+}
+
+.role-selector {
+    width: 300px;
+    height: 50px;
+
+    background-color: transparent;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.role-btn {
+    width: 150px;
+    height: 30px;
+    border-color: transparent;
+    background-color: transparent;
+
+    margin: 5 20px;
+
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
+.role-btn:hover {
+    color: rgb(152, 153, 150);
+    border-bottom: 2px solid rgb(152, 153, 150); 
+}
+
+.role-btn:focus {
+    color: rgb(179, 42, 31);
+    border-bottom: 2px solid rgb(179, 42, 31); 
+}
+
+.form-group {
+    margin-bottom: 0px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    width: 100%;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.form-group button:hover {
+    background-color: #0056b3;
+}
+
+.verificationCodeContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.verificationCodeContainer input {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.verificationCodeContainer img {
+    width: 30%; /* 图片占容器的30% */
+    height: 100%;
+    cursor: pointer;
+}
+
+.toggle-mode {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.toggle-links {
+    display: flex;
+    gap: 50px; /* 间隔 */
+}
+
+.toggle-link {
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.toggle-link:hover {
+    text-decoration: underline;
+}
+
+/* 添加错误提示样式 */
+.error-message {
+    color: red;
+    font-size: 10px;
+    margin: 0;
+    text-align: left;
+    visibility: hidden; /* 设置为不可见，但占据空间 */
+}
+
+.input-error {
+    border: 1px solid red !important;
+    animation: shake 0.5s;
+}
+
+

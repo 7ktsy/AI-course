@@ -1,0 +1,11 @@
+# Python
+__pycache__/       # Python 字节码缓存
+*.pyc              # 编译后的 Python 文件
+*.pyo
+*.pyd
+
+venv/              # 虚拟环境（建议每个开发者本地创建）
+.env               # 环境变量（包含敏感信息！）
+.env.local         # 本地覆盖的环境变量
+
+TEST/

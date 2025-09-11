@@ -1,0 +1,424 @@
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background-color: rgb(255, 255, 255);
+    margin: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+#navi {
+    background-color: rgb(0, 0, 0);
+    padding: 0px;
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#Name {
+    padding-left: 5px;
+    padding-right: 120px;
+    color: white;
+    font-family: "Snap ITC";
+    font-size: 20px;
+}
+
+#searchContainer {
+    width: 480px;
+    height: 40px;
+    margin: 0 20px;
+    background-color: #1f1f1f;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#searchBox {
+    width: 350px;
+    padding: 8px 35px 8px 15px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+#searchButton {
+    padding: 5px;
+    margin-left: 10px;
+    background: transparent;
+    border: none;
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-family: "宋体";
+    font-style: normal;
+}
+
+#searchButton:hover {
+    color: white;
+}
+
+.navItem {
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.navIcon {
+    width: 40px;
+    height: 40px;
+    background-color: #1f1f1f;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+}
+
+.navTxt {
+    color: white;
+    font-size: 12px;
+    margin: 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.navItem:hover .navIcon {
+    color: #d8aa45;
+}
+
+.navItem:hover .navTxt {
+    color: #d8aa45;
+}
+
+.newsContainer {
+    width: 100%;
+    height: 600px;
+    padding: 0;
+    margin-top: 70px;
+    margin-left: 0px;
+    margin-right: 0px;
+    background-color: rgb(85, 84, 84);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.newsImageLink {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gotoContackAIRoboticsContainer {
+    width: 100%;
+    height: 70px;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    /* 使用Flexbox布局 */
+    align-items: center;
+    /* 垂直居中 */
+    justify-content: center;
+    /* 水平居中 */
+}
+
+.gotoContackAIRoboticsImages {
+    max-width: 100%;
+    /* 确保图片不会超出容器 */
+    height: auto;
+    /* 保持图片的宽高比例 */
+}
+
+.contactAIRoboticsContainer {
+    width: 100%;
+    height: 500px;
+    margin: 0px;
+    padding-top: 70px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatBoxImagesContainer {
+    width: 30%;
+    height: 75%;
+    border-radius: 10px;
+    border: none;
+    background-color: blueviolet;
+    margin-left: 20px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatBoxImagesContainerImages {
+    max-width: 100%;
+    /* 确保图片不会超出容器 */
+    height: auto;
+    /* 保持图片的宽高比例 */
+}
+
+.chatBox {
+    width: 75%;
+    height: 100%;
+    border-radius: 10px;
+    border: none;
+    background-color: transparent;
+    padding: 5px;
+    margin-left: 10px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatHistory {
+    width: 100%;
+    height: 92%;
+    border-radius: 10px 10px 0 0;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    padding: 0px;
+    background-color: #ffffff;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    box-sizing: border-box;
+}
+
+.messageBot {
+    display: flex;
+    margin-bottom: 30px;
+    align-items: flex-start; /* 对齐方式 */
+}
+
+.messageBot img {
+    width: 35px;
+    height: 35px;
+    border-radius: 35px;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.headerBot {
+    display: flex;
+    justify-content: flex-start; 
+    margin-bottom: 1px;
+}
+
+.replayBot {
+    height: 10px;
+    background-color: transparent;
+}
+
+.nameBot {
+    color: #aaa;
+    font-size: 10px;
+}
+
+.bubbleBot {
+    max-width: 400px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px 10px;
+    background-color: #ffffff;
+    font-family: 'sans-serif', Times, serif;
+    font-size: 12px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.messageUser {
+    display: flex;
+    margin-bottom: 30px;
+    align-items: flex-start; /* 对齐方式 */
+    justify-content: flex-end; /* 对齐到右边 */
+}
+
+.messageUser img {
+    width: 35px;
+    height: 35px;
+    border-radius: 35px;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.headerUser {
+    display: flex;
+    justify-content: flex-end; 
+    margin-bottom: 1px;
+}
+
+.replayUser {
+    height: 10px;
+    background-color: transparent;
+}
+
+.nameUser {
+    color: #aaa;
+    font-size: 10px;
+}
+
+.bubbleUser {
+    max-width: 400px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px 10px;
+    background-color:#dddddd;
+    font-family: 'sans-serif', Times, serif;
+    font-size: 12px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.timestamp {
+    font-size: 10px;
+    color: #aaa;
+    margin-left: 10px;
+}
+
+.inputContainer {
+    width: 100%;
+    height: 8%;
+    border-radius: 0 0 10px 10px;
+    border: none;
+    background-color: #a84242;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inputContainer input {
+    width: 110%;
+    height: 90%;
+    padding-left: 10px;
+    ;
+    border: 1px solid #ccc;
+    border-radius: 0 0 10px 10px;
+    font-size: 10px;
+    color: #1f1f1f;
+    outline: none;
+}
+
+.youqinglianjie {
+    color: #fff;
+    font-size: 24px;
+    text-align: left;
+    background-color: #000000;
+    border: 2px solid #000000;
+    margin-top: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 10px;
+    /* 设置文本距离上边界的距离 */
+    padding-bottom: 50px;
+    /* 设置文本距离下边界的距离 */
+    margin-bottom: 0px;
+    margin-top: 0px;
+    list-style-type: none;
+}
+
+.youqinglianjie li a {
+    line-height: 20px;
+    flex: 1 0 calc(12.5% - 10px);
+    /* 每行显示8个链接，每个链接占用12.5%，减去10px的间隔 */
+    margin-right: 10px;
+    /* 设置链接之间的间隔 */
+    list-style-type: none;
+    /* 移除列表前的点 */
+    font-size: 10px;
+    color: #fff;
+    white-space: nowrap;
+    /* 防止文本换行 */
+    overflow: hidden;
+    /* 隐藏超出链接宽度的文本 */
+    text-overflow: ellipsis;
+    /* 使用省略号表示超W出的文本 */
+    list-style-type: none;
+}
+
+.youqinglianjie li a:hover {
+    background-color: #32B8EA;
+    /* 鼠标悬停时的背景颜色 */
+    color: #fff;
+    /* 鼠标悬停时的文字颜色 */
+}
+
+
+.bottom {
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    background-color: #000000;
+    border: 2px solid #000000;
+    margin-top: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 10px;
+    /* 设置文本距离上边界的距离 */
+    padding-bottom: 10px;
+    /* 设置文本距离下边界的距离 */
+    justify-content: center;
+    gap: 10px;
+}
+
+.bottom li {
+    color: #fff;
+    line-height: 20px;
+    font-size: 10px;
+    list-style-type: none;
+}
+
+.bottom li a:link {
+    color: #fff;
+    /* 链接未被点击时的颜色 */
+}
+
+.bottom li a:hover {
+    background-color: #32B8EA;
+    /* 鼠标悬停时的背景颜色 */
+    color: #fff;
+    /* 鼠标悬停时的文字颜色 */
+}
+
+.bottom li a:link,
+.bottom li a:visited {
+    color: #fff;
+    /* 设置链接未被点击或已访问时的颜色为白色 */
+}
